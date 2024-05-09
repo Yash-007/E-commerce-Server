@@ -32,6 +32,12 @@ app.use(errorMiddleware);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/uploads", express.static("uploads"))
+
+
+app.get("/", (req, res) => {
+    res.send("API Working with /api/v1");
+  });
+  
     
 // routes
 app.use("/api/v1/user", userRoute);
