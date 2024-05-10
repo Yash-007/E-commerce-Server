@@ -17,7 +17,7 @@ config({
 });
 
 const app = express();
-const PORT= process.env.PORT || 5000;
+const PORT=  5000;
 const stripeKey = process.env.STRIPE_KEY || "";
 export const myCache = new NodeCache();
 export const stripe = new Stripe(stripeKey);
