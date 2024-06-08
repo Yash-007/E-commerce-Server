@@ -1,7 +1,7 @@
+import { deleteFileFromObjectStorage } from "../middlewares/bucket.js";
 import { Product } from "../models/products.js";
 import { myCache } from "../server.js";
 import { invalidateCache } from "../utils/features.js";
-import {rm} from 'fs';
 
 
 export const getLatestProducts= async(req,res)=>{
@@ -130,12 +130,10 @@ export const getFilteredProduct= async(req,res)=>{
           })
     }
 
-    req.body.photo = req.file?.path;
+    req.body.photo = req.file?.key;
   
     if(!name || !price || !category || !stock){
-      rm(req.body.photo, ()=>{
-          console.log("Deleted");
-      })
+       deleteFileFromObjectStorage(req.file.key);
       
       return res.status(400).send({
         success: false,
@@ -167,11 +165,9 @@ export const updateProduct= async(req,res)=>{
       })
   }
 
-  if(req.file){
-   rm(product.photo, ()=>{
-    console.log("deleted");
-   })
-   req.body.photo= req.file.path;
+  if(req.file){ 
+   deleteFileFromObjectStorage(product.photo);
+   req.body.photo= req.file.key;
   }
 
  const updated = await Product.findByIdAndUpdate(id, req.body, {new:true});
@@ -193,11 +189,9 @@ export const updateProduct= async(req,res)=>{
             success: false,
             message: "Product not found",
           })
-    }
-    
-    rm(product.photo, ()=>{
-        console.log("Product photo deleted");  
-    });
+    } 
+
+    deleteFileFromObjectStorage(product.photo);
 
     await product.deleteOne();
 

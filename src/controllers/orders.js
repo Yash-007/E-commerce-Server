@@ -42,7 +42,7 @@ export const allOrders= async(req,res)=>{
         orders = await Order.find({}).populate("user", "name");
         myCache.set(key, JSON.stringify(orders));
         }
-
+ 
         return res.status(200).send({
             success:true,
             orders,

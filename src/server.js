@@ -16,12 +16,18 @@ config({
     path: './.env'
 });
 
+
 const app = express();
 const PORT= process.env.PORT || 4000;
 const stripeKey = process.env.STRIPE_KEY || "";
+
+// export const AWS_OBJECT_STORAGE_REGION= process.env.AWS_OBJECT_STORAGE_REGION;
+// export const AWS_ACCESS_KEY_ID= process.env.AWS_ACCESS_KEY_ID;
+// export const AWS_SECRET_ACCESS_KEY= process.env.AWS_SECRET_ACCESS_KEY;
+// export const AWS_BUCKET_NAME= process.env.AWS_BUCKET_NAME;
+
 export const myCache = new NodeCache();
 export const stripe = new Stripe(stripeKey);
-
 
 
 const mongo_uri= process.env.MONGO_URI;
@@ -54,3 +60,4 @@ app.use("/api/v1/dashboard", dashboardRoute);
 app.listen(PORT, (req,res)=>{
     console.log(`server is listening at port ${PORT}`);
 });
+
